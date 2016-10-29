@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel='icon' href='/static/logo.ico ' type='image/x-ico' /> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="/static/js/jquery-1.8.3.min.js"></script>
+<script src="/static/js/jquery.mobile-1.3.2.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>我要爆料</h1>
+    <a href="/index" data-role="button" data-icon="gear" data-transition="slide">主页</a>
+  </div>
+
+  <div data-role="content" data-theme="a">
+      <form method="post" onsubmit="return infoVaild()" action="/offerrecord/" data-ajax= "false">{% csrf_token %}
+			      <div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+                <h3>爆料规则</h3>
+                <p>匿名爆料，爆料之前希望各位先去薪水库里查询是否有无此类薪水，如有，请评分，如无请在此爆料，谢谢</p>
+            </div>      
+            <label for="company">公司名称(必填)：</label>
+            <input type="text" name="company" id="company" placeholder="请输入公司名称，如华为">
+            <label for="position">岗位名称(必填)：</label>
+            <input type="text" name="position" id="position" placeholder="请输入岗位名称，如算法工程师">
+            <label for="salary">岗位年薪(必填)：</label>
+            <input type="text" name="salary" id="salary" placeholder="请输入岗位年薪，可以写区间，如18-20W，希望尽量具体点">
+            <label for="city">工作地点(必填)：</label>
+            <input type="text" name="city" id="city" placeholder="请输入工作所在城市，如杭州">
+            <label for="remark">备注说明(非必填)：</label>
+            <textarea type="text" name="remark" id="remark" placeholder="请输入offer详细信息，个人学历，是否special,岗位相关福利，如硕士 华为special 16*16，五险一金，住房公积金等"></textarea>
+            <button data-theme="b" id="submit" type="submit">点此爆料</button>  
+    	</form>
+  </div>  
+
+  <div data-role="footer" data-theme="a" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="/left" data-icon="info"  class="ui-btn-active" >我要爆料</a></li>
+				<li><a href="/index" data-icon="grid" rel="external" >主页</a></li>
+				<li><a href="/right/2" data-icon="gear" rel="external" >薪水查询</a></li>
+			</ul>
+		</div>	 
+  </div>
+</div> 
+
+
+  
+
+<script type="text/javascript">
+             function infoVaild(){
+                var val1 = document.getElementById("company").value;
+                var val2 = document.getElementById("position").value;
+                var val3 = document.getElementById("salary").value;
+                var val4 = document.getElementById("city").value;
+                var length1 = val1.trim().length;
+                var length2 = val2.trim().length;
+                var length3 = val3.trim().length;
+                var length4 = val4.trim().length;
+                if(!val1 || !val2 || !val3 || !val4 || !length1 || !length2 || !length3 || !length4)
+                {
+                    alert("请认真填写完信息再爆料哦！");
+                    return false;
+                }
+                var val5 = document.getElementById("remark").value;
+                var sum = "请确认提交信息:\n公司名称:"+val1+"\n工作地点:"+val2+"\n工资待遇:"+val3+"\n工作城市:"+val4+"\n备注:"+val5+"\n";
+                var result = confirm(sum);  
+                if(result){  
+                  return true;
+                }
+                else return false; 
+              }
+</script>
+</body>
+</html>

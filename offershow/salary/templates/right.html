@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel='icon' href='/static/logo.ico ' type='image/x-ico' /> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="/static/js/jquery-1.8.3.min.js"></script>
+<script src="/static/js/jquery.mobile-1.3.2.min.js"></script>
+</head>
+<body>
+<div data-role="page" data-theme="a">
+    <div data-role="header" data-position="fixed">
+		     <h1>薪水查询</h1>
+             <a href="/index" data-role="button" data-icon="gear" data-transition="slide">主页</a>
+	</div>
+	<div data-role="content"  >
+		<ul data-role="listview"  data-filter="true" data-filter-placeholder="查询关键字">
+			{% for item in offer %}
+			    <li>
+			       <a href="/offerdetail/{{ item.id }}" data-ajax= "false">
+			       {{ item.company }} 
+			       {{ item.city }}
+			       {{ item.position }}
+			       	{% ifequal type "1" %}
+			       <span class="ui-li-count">{{ item.time|date:"Y-m-d H:i" }}</span>
+			       	{% endifequal %} 
+			       {% ifequal type "2" %}
+			       <span class="ui-li-count">可信度: {{ item.score }}</span>
+			       	{% endifequal %}
+			       	{% ifequal type "3" %}
+			       <span class="ui-li-count">浏览量: {{ item.number }}</span>
+			       	{% endifequal %}
+			       </a>
+			    </li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div data-role="footer" data-theme="a" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="/left" data-icon="info" rel="external" >我要爆料</a></li>
+				<li><a href="/index" data-icon="grid" rel="external" >主页</a></li>
+				<li><a href="/right/2" data-icon="gear" class="ui-btn-active" >薪水查询</a></li>
+			</ul>
+		</div>		
+	</div>
+</div>
+
+</body>
+</html>

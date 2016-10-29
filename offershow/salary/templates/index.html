@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel='icon' href='/static/logo.ico ' type='image/x-ico' /> 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<script src="/static/js/jquery-1.8.3.min.js"></script>
+<script src="/static/js/jquery.mobile-1.3.2.min.js"></script>
+</head>
+<body>
+ 
+<div data-role="page" data-theme="a">
+  <div data-role="header" data-position="fixed">
+    <h1>校招薪水</h1>
+    <a href="/index" data-role="button" data-icon="gear" data-transition="slide">主页</a>
+  </div>
+  <br /><br /><br />
+  <div data-role="content" data-theme="a">
+        <a href="/right/1" data-theme="b"  data-role="button">薪水查询(时间最近优先展示)</a>
+        <a href="/right/2" data-theme="b"  data-role="button">薪水查询(可信度最高优先展示)</a>
+        <a href="/right/3" data-theme="b"  data-role="button">薪水查询(浏览量最高优先展示)</a>
+
+		<div data-role="collapsible" data-theme="e" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+            <h3>重要通知</h3>
+            <p>反馈方面：添加了详情回退按钮，框架原因无法回退到带参数查询页面，一时半会难以解决，谢谢反馈</p>
+            <p>功能方面：简单粗暴添加了几种数据排序方式，后期将会对可信度高的数据进行数据优化完善，希望众包给大家完善备注信息，功能还在构思中</p>
+            <p>改进方面：已有师弟决定来帮忙改进一下前端，熬夜写完了几个restful接口，期待师弟的优化</p>
+        </div>			
+		<div data-role="collapsible" data-theme="e" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+            <h3>使用规则</h3>
+            <p>本次应用只是针对2017届的校招薪水待遇</p>
+            <p>规则一:提供查询薪水功能</p>
+            <p>规则二:提供匿名爆料薪水功能，希望大家据实填写，真诚交流哈。</p>
+            <p>规则三:提供打分评价功能，可信度初始为3，正面评价加一分，负面评价扣一分，低于0分以下的薪水不再展示</p>
+        </div>
+		<div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+            <h3>薪水提问</h3>
+            <p>该栏目正在建设中，请稍等一会</p>
+        </div>
+		<div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+			<h3>关于我们</h3>
+            <p>弱渣码农写的，纯粹只想交流一下薪水待遇，做的不好还望勿喷，如有好的意见跟想法请联系我，欢迎关注微信公众号 校招薪水，反馈邮箱:abc_hust@163.com</p>
+            <p>10.27 16:36更新 一个小半天，已经有60条数据，200多点评了，比较开心，至少还是能够提供小部分帮助，希望大家真诚的填写，谢谢。</p>
+            <p>10.27 23:36更新 刚出门听了宣讲会，回来一看，已经有234条数据，1392条点评了，瞬间觉得这次貌似做了一个有意义的事情（喜欢许三多哈），于是乎，今晚决定加班好好改改。</p>
+            <p>10.28 04:16更新 数据量已经更新到249条，点评数据有了1521条了，关键是offer详情的浏览量累计已经突破了15W，鸡血满满，跟一个会前端的师弟沟通完，决定熬夜写完restful的接口，这样前端后端分离，顺便改进了几个需求。</p>
+
+        </div>
+	</div> 
+
+  <div data-role="footer" data-theme="a" data-position="fixed">
+		<div data-role="navbar">
+			<ul>
+				<li><a href="/left" data-icon="info"  rel="external">我要爆料</a></li>
+				<li><a href="/index" data-icon="grid" class="ui-btn-active" >主页</a></li>
+				<li><a href="/right/2" data-icon="gear" rel="external">薪水查询</a></li>
+			</ul>
+		</div>	 
+  </div>
+</div>     
+
+
+</body>
+</html>
