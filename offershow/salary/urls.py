@@ -11,6 +11,9 @@ urlpatterns = patterns("",
     url(r'^offerdetail/(?P<id>\d+)/$', views.offerdetail, name='offerdetail'),
     url(r'^offerlike/(?P<id>\d+)/$', views.offerlike, name='offerlike'),
     url(r'^offerdislike/(?P<id>\d+)/$', views.offerdislike, name='offerdislike'),
+    url(r'^offersearch/$', views.offersearch),
+    url(r'^offersearch/(.+)/$', views.offersearch, name='offersearch'),
+
     # restful api
     url(r'^webapi/jobtotal/', views.jobtotal, name='jobtotal'),
     url(r'^webapi/jobrecord/', views.jobrecord, name='jobrecord'),

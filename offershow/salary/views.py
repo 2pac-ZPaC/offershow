@@ -103,6 +103,17 @@ def offerdislike(request,id):
 
 
 
+def offersearch(request,content=""):
+    try:
+        type = '2'
+        offer = OfferInfo.objects.filter(score__gte=0).filter(Q(company__contains=content)|Q(city__contains=content)|Q(position__contains=content)).order_by('-score').values("id","company","city","salary","remark","position","time","score","number")
+        return render(request, 'offersearch.html', {'offer': offer,'type':type})
+    except BaseException, e:
+        re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
+
+
+
 
 
 def jobtotal(request):
@@ -131,6 +142,7 @@ def jobrecord(request):
         city = request.POST['city']
         salary = request.POST['salary']
         remark = request.POST['remark']
+        print 111
     ip = get_client_ip(request)
     try:
         OfferInfo.objects.create(company = company,\
