@@ -5,6 +5,9 @@ from django.http import HttpResponseRedirect
 from models import OfferInfo,OfferEvaluate
 import json
 import datetime
+from django.db.models import Sum
+from django.db.models import Q
+from django.db import connection
 class CJsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
@@ -24,6 +27,7 @@ def get_client_ip(request):
         except:
             regip = ""
     return regip
+    # return HttpResponse(regip)
 
 def index(request):
     return render(request, 'index.html')
@@ -31,14 +35,16 @@ def index(request):
 def left(request):
     return render(request, 'left.html')
 
-def right(request,type):
+def right(request,type='1'):
+    print type
     if type == "1":
-        offer = OfferInfo.objects.filter(score__gte=0).order_by('-time').values()
+        offer = OfferInfo.objects.filter(score__gte=0).order_by('-time').values("id","company","city","salary","remark","position","time","score","number")
     if type == "2":
-        offer = OfferInfo.objects.filter(score__gte=0).order_by('-score').values()
+        offer = OfferInfo.objects.filter(score__gte=0).order_by('-score').values("id","company","city","salary","remark","position","time","score","number")
     if type == "3":
-        offer = OfferInfo.objects.filter(score__gte=0).order_by('-number').values()
+        offer = OfferInfo.objects.filter(score__gte=0).order_by('-number').values("id","company","city","salary","remark","position","time","score","number")
     return render(request, 'right.html', {'offer': offer,'type':type})
+    # return render(request, 'home.html', {'string': data})
 
 def offerrecord(request):
     if 'company' not in request.POST or \
@@ -101,10 +107,8 @@ def offerdislike(request,id):
 
 def jobtotal(request):
     try:
-        data = OfferInfo.objects.filter(score__gte=0).order_by('-time').values()
-        print 111
+        data = OfferInfo.objects.filter(score__gte=0).order_by('-time').values("id","company","city","salary","remark","position","time","score","number")
         info = json.dumps(list(data), cls=CJsonEncoder, ensure_ascii=False)
-        print 222
         re = {'r': 1, 'msg': u"成功查询所有岗位数据信息",'info':json.loads(info)}
         return HttpResponse(json.dumps(re),content_type='application/json',status="201")
     except BaseException, e:
@@ -187,4 +191,61 @@ def jobdislike(request,id):
         re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
         return HttpResponse(json.dumps(re), content_type='application/json',status="201")
  
+
+def jobcount(request):
+    try:
+        num_sum = OfferInfo.objects.count();
+        evaluate_sum = OfferEvaluate.objects.count();
+        click_sum = OfferInfo.objects.all().aggregate(Sum('number'))["number__sum"]
+        re = {'r': 1, 'msg': u"成功查询数据统计信息",'num_sum':num_sum,'evaluate_sum':evaluate_sum,'click_sum':click_sum}
+        return HttpResponse(json.dumps(re),content_type='application/json',status="201")
+    except BaseException, e:
+        print e
+        re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
+
+def jobsearch(request,content=""):
+    try:
+        data = OfferInfo.objects.filter(score__gte=0).filter(Q(company__contains=content)|Q(city__contains=content)|Q(position__contains=content)).values("id","company","city","salary","remark","position","time","score","number")
+        info = json.dumps(list(data), cls=CJsonEncoder, ensure_ascii=False)
+        re = {'r': 1, 'msg': u"根据关键字查询结果成功",'info':json.loads(info)}
+        return HttpResponse(json.dumps(re),content_type='application/json',status="201")
+    except BaseException, e:
+        re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
+
+
+def jobcity(request):
+    try:
+        cursor = connection.cursor()
+        cursor.execute('select city,count(*) from offerinfo where score >= 0 group by city')
+        data = cursor.fetchall()
+        info = []
+        for item in data:
+            dic={}
+            dic['city']=item[0]
+            dic['number']=item[1]
+            info.append(dic)
+        re = {'r': 1, 'msg': u"成功获取薪水公司分类以及相应总数",'info':info}
+        return HttpResponse(json.dumps(re),content_type='application/json',status="201")
+    except BaseException, e:
+        re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
+
+def jobcompany(request):
+    try:
+        cursor = connection.cursor()
+        cursor.execute('select company,count(*) from offerinfo where score >= 0 group by company ')
+        data = cursor.fetchall()
+        info = []
+        for item in data:
+            dic={}
+            dic['company']=item[0]
+            dic['number']=item[1]
+            info.append(dic)
+        re = {'r': 1, 'msg': u"成功获取薪水城市分类以及相应总数",'info':info}
+        return HttpResponse(json.dumps(re),content_type='application/json',status="201")
+    except BaseException, e:
+        re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
 
