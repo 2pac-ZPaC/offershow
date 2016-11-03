@@ -3,24 +3,52 @@
 <head>
 <link rel='icon' href='/static/logo.ico ' type='image/x-ico' /> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css">
+<link rel="stylesheet" type="text/css" href="/static/css/jquery.mobile-1.3.2.min.css">
 <script src="/static/js/jquery-1.8.3.min.js"></script>
 <script src="/static/js/jquery.mobile-1.3.2.min.js"></script>
 </head>
 <body>
- 
+ <script>  
+$(document).ready(function(){
+  $("#search").click(function(){
+    var val = document.getElementById("content").value;
+    var length = val.trim().length;
+    if(length>=45)
+    {
+        alert("关键字过长，请保持在四十五个字符以内，谢谢");
+        return false;
+    }
+    window.location.href="/offersearch/"+val;   
+  });
+});
+          
+</script> 
 <div data-role="page" data-theme="a">
   <div data-role="header" data-position="fixed">
     <h1>校招薪水</h1>
     <a href="/index" data-role="button" data-icon="gear" data-transition="slide">主页</a>
   </div>
-  <br /><br /><br />
+  <br />
   <div data-role="content" data-theme="a">
-        <a href="/right/1" data-theme="b"  data-role="button">薪水查询(时间最近优先展示)</a>
-        <a href="/right/2" data-theme="b"  data-role="button">薪水查询(可信度最高优先展示)</a>
-        <a href="/right/3" data-theme="b"  data-role="button">薪水查询(浏览量最高优先展示)</a>
-
-		<div data-role="collapsible" data-theme="e" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+        <div class="ui-btn ui-shadow ui-corner-all">  
+            <input type="search" name="content" id="content" value=""  placeholder="搜索关键字(匹配公司，地点，岗位)" onkeypress="if(event.keyCode==13) {search.click();}"/>  
+        </div>      
+        <div class="ui-btn ui-shadow ui-corner-all">  
+            <input type="button" name="search" id="search" value="搜索"  />  
+        </div> 
+        <div class="ui-grid-b">
+            <div class="ui-block-a">
+                <input type="button" data-theme="b" value="最新"  onclick="javascript:location.href='/right/1'">
+            </div>
+            <div class="ui-block-b">
+                <input type="button" data-theme="b" value="最信" onclick="javascript:location.href='/right/2'">
+            </div>
+            <div class="ui-block-c">
+                <input type="button" data-theme="b" value="最热" onclick="javascript:location.href='/right/3'">
+            </div>
+        </div>
+   
+     	<div data-role="collapsible" data-theme="e" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
             <h3>重要通知</h3>
             <p>反馈方面：添加了详情回退按钮，框架原因无法回退到带参数查询页面，一时半会难以解决，谢谢反馈</p>
             <p>功能方面：简单粗暴添加了几种数据排序方式，后期将会对可信度高的数据进行数据优化完善，希望众包给大家完善备注信息，功能还在构思中</p>
@@ -33,17 +61,23 @@
             <p>规则二:提供匿名爆料薪水功能，希望大家据实填写，真诚交流哈。</p>
             <p>规则三:提供打分评价功能，可信度初始为3，正面评价加一分，负面评价扣一分，低于0分以下的薪水不再展示</p>
         </div>
-		<div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-            <h3>薪水提问</h3>
-            <p>该栏目正在建设中，请稍等一会</p>
+        <div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+            <h3>项目数据</h3>
+            <p>本着共享的原则，这里公开一下该项目的所有数据以及代码</p>
+            <p>薪水条数:433条</p>
+            <p>点评数据:3399条</p>
+            <p>薪水浏览量(只统计了详情页面):466852</p>
+            <p>代码开源：开源地址<a href="https://github.com/csfamily/offershow">点我访问</a>希望有对前端或者安全性感兴趣的朋友可以去协作一下，一起学习</p>
         </div>
-		<div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
-			<h3>关于我们</h3>
+        <div data-role="collapsible" data-collapsed-icon="arrow-d" data-expanded-icon="arrow-u">
+            <h3>项目进展</h3>
             <p>弱渣码农写的，纯粹只想交流一下薪水待遇，做的不好还望勿喷，如有好的意见跟想法请联系我，欢迎关注微信公众号 校招薪水，反馈邮箱:abc_hust@163.com</p>
             <p>10.27 16:36更新 一个小半天，已经有60条数据，200多点评了，比较开心，至少还是能够提供小部分帮助，希望大家真诚的填写，谢谢。</p>
             <p>10.27 23:36更新 刚出门听了宣讲会，回来一看，已经有234条数据，1392条点评了，瞬间觉得这次貌似做了一个有意义的事情（喜欢许三多哈），于是乎，今晚决定加班好好改改。</p>
             <p>10.28 04:16更新 数据量已经更新到249条，点评数据有了1521条了，关键是offer详情的浏览量累计已经突破了15W，鸡血满满，跟一个会前端的师弟沟通完，决定熬夜写完restful的接口，这样前端后端分离，顺便改进了几个需求。</p>
-
+            <p>10.29 17:04更新 数据量334条，点评数据有了2500条了，累计offer详情页面访问量超过了26w（貌似排行榜第一个有问题，后台数据我没有动过，应该是有人爬取吧，希望这样的人放过我，要数据，去git上有的，不过排除一下也是超过了20w），比较开心，今天顺便周六，白天木有出去玩，安安静静的在宿舍写完了一些关于代码开源以及数据的东西，写的还比较详细，希望感兴趣的朋友可以去加入，如果厉害的朋友指点一下我那就更好。</p>
+            <p>11.01 11:00更新 数据量433条，点评数据有了3399条了，累计offer详情页面访问量超过了45w，虽然根据后台ip访问看到有部分数据是有人爬取的，但433跟3399的数据，我相信绝大多数都是每一个人认真贡献的，在此也非常感谢无私的各位，其实用计算机的一个概念来说，这也是众包，是大家一起协作的成果，所以本着共享原则，数据决定公开了，个人也花了一天时间去学习django+uwsgi+nginx的部署，近期就可以改进一下，接口也直接增加了关于数据统计，查询分类的一些接口。后台数据也已经公开，希望有需要的人可以共享，但希望大家能够转载一下出处即git项目信息地址。</p>
+            <p>11.01 15:00更新 利用白天写的接口更新了一下页面，修改一些bug，主要是提供了关键字搜索功能，匹配公司名，工作地，岗位等。</p>
         </div>
 	</div> 
 
