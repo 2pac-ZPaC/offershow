@@ -67,9 +67,9 @@ WSGI_APPLICATION = 'offershow.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '使用自己创建的数据库', 
-        'USER': 'root',  
-        'PASSWORD': '自己的密码',  
+        'NAME': '自己填写', 
+        'USER': '自己填写',  
+        'PASSWORD': '自己填写',  
         'HOST': 'localhost',  
         'PORT': '3306',  
     }
