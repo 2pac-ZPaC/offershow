@@ -470,3 +470,27 @@ def jobcompany(request):
         re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
         return HttpResponse(json.dumps(re), content_type='application/json',status="201")
 
+def jobmessagelist(request):
+    if 'access_token' not in request.POST:
+        re = {'r': 0, 'msg': "你的access_token没传入，请查看参数信息，此参数如若需要请与开发者联系"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
+    access_token = request.POST['access_token']
+    if not OfferToken.objects.filter(token=access_token):
+        re = {'r': 0, 'msg': "你的access_token不存在或是已经过期，此参数如若需要请与开发者联系"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
+    if 'id' not in request.POST :
+        re = {'r': 0, 'msg': u"参数不全！"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")
+    else:
+        id = request.POST['id']
+    try:
+        print id
+        data = OfferMessage.objects.filter(offerid=id).order_by('-time').values("id","offerid","content","time")
+        print 222
+        info = json.dumps(list(data), cls=CJsonEncoder, ensure_ascii=False)
+        logger.info(u"调用接口成功 - jobmessagelist - "+access_token) 
+        re = {'r': 1, 'msg': u"获取留言信息成功，按照时间先后顺序排序",'info':json.loads(info)}
+        return HttpResponse(json.dumps(re),content_type='application/json',status="201")
+    except BaseException, e:
+        re = {'r': 0, 'msg': u"系统出现错误，无法进行操作"}
+        return HttpResponse(json.dumps(re), content_type='application/json',status="201")

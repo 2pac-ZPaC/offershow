@@ -30,6 +30,8 @@ urlpatterns = patterns("",
     url(r'^webapi/jobcount/', views.jobcount, name='jobcount'),
     url(r'^webapi/jobsearch/', views.jobsearch, name='jobsearch'),
     url(r'^webapi/jobmessage/', views.jobmessage, name='jobmessage'),
+    url(r'^webapi/jobmessagelist/', views.jobmessagelist, name='jobmessagelist'),
+
 )
 
 
