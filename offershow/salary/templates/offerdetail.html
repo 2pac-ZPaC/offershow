@@ -7,6 +7,14 @@
 <script src="/static/js/jquery-1.8.3.min.js"></script>
 <script src="/static/js/jquery.mobile-1.3.2.min.js"></script>
 </head>
+<style type="text/css">
+  .ui-btn-text {  
+white-space: normal;  
+} 
+ .ui-li-desc {  
+white-space: normal;  
+} 
+</style>
 <body>
 <div data-role="page" data-theme="a">
     <div data-role="header" data-position="fixed">
@@ -15,24 +23,57 @@
 	</div>
 	<div data-role="content"  >
 	<div class="ui-grid-a">
-       <div class="ui-block-a"><button type="button" data-theme="a">公司名称:</button></div>
-       <div class="ui-block-b"><button type="button" data-theme="a">{{ offerdetail.company }}</button></div>	   
-       <div class="ui-block-a"><button type="button" data-theme="a">工作岗位:</button></div>
-       <div class="ui-block-b"><button type="button" data-theme="a">{{ offerdetail.position }}</button></div>
-       <div class="ui-block-a"><button type="button" data-theme="a">工作地点:</button></div>
-       <div class="ui-block-b"><button type="button" data-theme="a">{{ offerdetail.city }}</button></div>
-       <div class="ui-block-a"><button type="button" data-theme="a">岗位薪水:</button></div>
-       <div class="ui-block-b"><button type="button" data-theme="a">{{ offerdetail.salary }}</button></div>
-       <div class="ui-block-a"><button type="button" data-theme="a">可信度评分:</button></div>
-       <div class="ui-block-b"><button type="button" data-theme="a">{{ offerdetail.score }}</button></div>
-       <div class="ui-block-a"><button type="button" data-theme="a">创建时间:</button></div>
-       <div class="ui-block-b"><button type="button" data-theme="a">{{ offerdetail.time|date:"Y-m-d" }}</button></div>
+       <div class="ui-block-a"><p align="left" data-theme="a" >公司名称:</p></div>
+       <div class="ui-block-b"><p align="center" data-theme="a">{{ offerdetail.company }}</p></div>   
+       <div class="ui-block-a"><p align="left" data-theme="a">工作岗位:</p></div>
+       <div class="ui-block-b"><p align="center" data-theme="a">{{ offerdetail.position }}</p></div>
+       <div class="ui-block-a"><p align="left" data-theme="a">工作地点:</p></div>
+       <div class="ui-block-b"><p align="center" data-theme="a">{{ offerdetail.city }}</p></div>
+       <div class="ui-block-a"><p align="left" data-theme="a">岗位薪水:</p></div>
+       <div class="ui-block-b"><p align="center" data-theme="a">{{ offerdetail.salary }}</p></div>
+       <div class="ui-block-a"><p align="left" data-theme="a">可信度评分:</p></div>
+       <div class="ui-block-b"><p align="center" data-theme="a">{{ offerdetail.score }}</p></div>
+       <div class="ui-block-a"><p align="left" data-theme="a">创建时间:</p></div>
+       <div class="ui-block-b"><p align="center" data-theme="a">{{ offerdetail.time|date:"Y-m-d" }}</p></div>
     </div>
-    <textarea type="text" data-theme="a">薪水备注：{{ offerdetail.remark }}</textarea>
+       <textarea type="text" data-theme="a" readonly="readonly">薪水备注：{{ offerdetail.remark }}</textarea>
     <fieldset class="ui-grid-a">
         <div class="ui-block-a"><button type="button" data-theme="e" id="dislike">差评，不符实</button></div>
         <div class="ui-block-b"><button type="button" data-theme="b" id="like">好评，很中肯</button></div>	   
     </fieldset>
+    <div class="ui-grid">
+        <h4 align="center">薪资详情补充或者留言</h4>
+        <ul data-role="listview" data-inset="true">
+        {% for item in comment %}
+           <li>
+             <p>{{ item.time|date:"Y-m-d H:i" }}</p>
+             <p type="text" data-theme="a">{{ item.content }}</p>
+           </li>
+         {% endfor %}
+        </ul>
+    </div>
+    <fieldset class="ui-grid">
+        <div class="ui-block"><a href="#login" data-rel="popup" data-position-to="window" data-role="button" data-theme="b" >添加留言</a>   
+        </div>     
+    </fieldset>
+   <div data-role="popup" id="login" data-overlay-theme="a" data-theme="c" data-dismissible="false"  
+       style="max-width: 600px;" class="ui-corner-all">  
+       <a href="#" data-rel="back" data-role="button" data-theme="e" data-icon="delete"  
+           data-iconpos="notext" class="ui-btn-right">Close</a>  
+       <div data-role="header" data-theme="e" class="ui-corner-top">  
+           <h1>  
+               留言</h1>  
+       </div>  
+       <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">  
+           <p>  
+               <textarea style="width: 100%; height: 100px;" id="content" placeholder="请输入offer补充信息或者疑问，格式:学历+补充内容,平台希望大家能够输入有效信息，避免无意义回复。"></textarea></p>  
+           <p style="text-align: center;">  
+               <a href="#" data-role="button" data-ajax="false" data-transition="flow" id="message"  
+                   data-theme="c">发布</a></p>  
+       </div>  
+    </div>  
+
+ 
 	</div>
 	<div data-role="footer" data-theme="a" data-position="fixed">
 		<div data-role="navbar">
@@ -61,6 +102,26 @@
         $.get("/offerdislike/"+id, function(ret){
             alert(ret);
         })
+      });
+      $("#message").click(function(){
+        var id = $("#offerid").html();
+        var content = document.getElementById("content").value;
+        var length = content.trim().length;
+        if(!length)
+        {
+          alert("请认真填写完留言或者补充信息！");
+          return false;
+        }
+        if(length>=450)
+        {
+          alert("留言或者补充信息字符过长，请保持在四百五十个字符以内，谢谢");
+          return false;
+        }
+        $.get("/offermessage/",{'id':id,'content':content}, function(ret){
+            alert(ret);
+            location.reload();
+        })
+ 
       });
     });
 </script>
